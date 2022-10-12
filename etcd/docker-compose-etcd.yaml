@@ -1,0 +1,50 @@
+version: '2.1'
+
+services:
+  apisix:
+    image: apache/apisix:2.15.0-debian
+    restart: always
+    volumes:
+      - ./config.yaml:/usr/local/apisix/conf/config.yaml
+    ##network_mode: host
+    ports:
+      - "9080:9080/tcp"
+      - "9091:9091/tcp"
+      - "9443:9443/tcp"
+      - "9092:9092/tcp"
+    networks:
+      e2e:
+  etcd:
+    image: 'bitnami/etcd:latest'
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+    networks:
+      e2e:      
+  otel-collector:
+    image: otel/opentelemetry-collector:0.50.0
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    volumes:
+      - ../otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    expose:
+      - 55678
+    depends_on:
+      - apisix  
+    networks:
+      e2e:
+  mock-server-a:
+    build: ../mock-server
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    networks:
+      e2e:          
+  mock-server-b:
+    build: ../mock-server
+    expose:
+      - 8000
+    networks:
+      e2e:      
+networks:
+  e2e:

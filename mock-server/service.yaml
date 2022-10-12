@@ -1,0 +1,24 @@
+services:
+  - name: Mock for Service1
+    port: 8000
+    endpoints:
+      - path: /service-a/work
+        method: GET
+        response: # the mocked response specification goes below
+          status: 200
+          body: "It worked"
+      - path: /service-a/error
+        method: GET
+        response: # the mocked response specification goes below
+          status: 500
+          body: "error"     
+      - path: /service-b/work
+        method: GET
+        response: # the mocked response specification goes below
+          status: 200
+          body: "It worked"
+      - path: /service-b/error
+        method: GET
+        response: # the mocked response specification goes below
+          status: 500
+          body: "error"               

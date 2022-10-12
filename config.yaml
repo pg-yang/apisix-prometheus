@@ -1,0 +1,10 @@
+apisix:
+  node_listen: 9080            
+  enable_ipv6: false
+  enable_admin: false
+  config_center: yaml
+plugin_attr:
+  prometheus:
+    export_addr:
+      ip: "0.0.0.0"
+      port: 9091

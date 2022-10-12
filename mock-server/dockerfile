@@ -1,0 +1,5 @@
+FROM python:3.7
+RUN  pip install -U mockintosh
+RUN pip install markupsafe==2.0.1
+ADD service.yaml /service.yaml
+ENTRYPOINT [ "mockintosh", "--bind", "0.0.0.0", "/service.yaml" ]
